@@ -1,0 +1,26 @@
+{-# LANGUAGE OverloadedStrings #-}
+{-# LANGUAGE DeriveGeneric #-}
+
+import qualified Clay as C
+import Control.Monad.Trans (liftIO)
+import Data.Aeson (ToJSON)
+import qualified Data.Text as T
+import qualified Data.Text.Lazy as L
+import qualified Database.SQLite.Simple as SQL
+import Database.SQLite.Simple.FromRow (FromRow, fromRow, field)
+import GHC.Generics (Generic)
+import Lucid
+import Network.Wai.Middleware.Cors (simpleCors)
+import Network.Wai.Middleware.RequestLogger (logStdoutDev)
+import Web.Scotty (middleware, scotty, get, json, html, param, ActionM)
+
+dbName :: String
+dbName = "mytracker.db"
+
+main :: IO ()
+main = scotty 3000 $ do
+  middleware logStdoutDev
+  middleware simpleCors
+
+  get "/" $ html "hello"
+
